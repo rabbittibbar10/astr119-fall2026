@@ -4,6 +4,8 @@ import sys
 
 import numpy as np
 SIGMA = 5.67e-8  # Stefan-Boltzmann constant, W m^-2 K^-4
+L_SUN = 3.8e26   # one solar luminosity, W
+AU = 1.496e11    # one astronomical unit, m
 
 
 def t_eq(L, d):
@@ -37,3 +39,9 @@ if __name__ == '__main__':
     d = float(sys.argv[2])
     T = t_eq(L, d)
     print(f"{T:.1f} K")
+
+    for i in range(len(planets)):
+        name = planets[i][0]
+        L_i = planets[i][1] * L_SUN   # solar luminosities -> W
+        d_i = planets[i][2] * AU      # AU -> m
+        print(f"{name:<14}{t_eq(L_i, d_i):>6.0f} K")
