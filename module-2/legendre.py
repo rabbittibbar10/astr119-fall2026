@@ -27,12 +27,18 @@ def legpoly(n,x):
     assert (type(n) is int) and (n >= 0), "n must be nonnegative integer"
     assert (x >= -1) and (x <= 1), "x must be in [-1,1]" 
 
-    # Calculate P_n(x)
-    ### THIS IS WHERE YOU COME IN
-    ### USE AS MANY LINES AS YOU NEED
-    ### USE A FOR LOOP OR WHILE LOOP, WHICHEVER YOU LIKE
-    y = None
-    ###
+    #Calculate P_n(x)
+    if n == 0:
+        return 1.0
+    p_prev = 1.0 #P_0
+    p_curr = x #P_1
+    for k in range(1,n):
+        p_next = ((2*k+1)*x*p_curr-k*p_prev)/(k+1)
+        p_prev = p_curr
+        p_curr = p_next
+        
+    y = p_curr
+    
 
     return y
 
@@ -68,3 +74,8 @@ if __name__ == '__main__':
     print()
     _test1()
     print()
+
+
+#AI use note
+#before claude: legpoly(2,0.5) ---> n = 2, x = 0.5
+#P_2(x) = 1/2(3x^2 -1) = 1/2(3*(0.5)**2 -1) = (3*0.25 -1)/2 = (0.75-1)/2 = -0.125
