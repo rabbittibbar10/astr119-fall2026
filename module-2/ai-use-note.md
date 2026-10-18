@@ -39,11 +39,17 @@ for i in range(1,5):
 
 **What I asked the agent for** (one line per request):
 
-**What I changed by hand:** 
+look at my multitab.py doc and let me know if I should change anything to make it neater or match the output wanted for task 2 HW2
 
+**What I changed by hand:** 
+I wrote the loop by myself and claude would not make it neat for me so I also added code to calculate length of longest string and then allign the numbers nicely
 **One "why" I asked, and the answer in my own words:** 
+what does print(..., end='') do?
+It adds a line after the ... (whatever you want to print)
+
 
 **What the agent got wrong, and how I found out** (if nothing, say what check you ran that would have caught it):
-
+The agent refused to write any actual code for me
 
 **What I still do not understand:**
+I hadn't seen this product table before so this is new for me

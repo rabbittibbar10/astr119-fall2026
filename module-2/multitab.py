@@ -16,11 +16,16 @@ def multitab(n):
     """
     assert (type(n) is int) and (n > 0), "n must be positive integer"
 
+
+    #find width of largest number N*N and add 1 for spacing
+    width = len(str(n*n))+1
+
     for i in range(1,n+1):
         row = []
         for j in range(1,n+1):
-            row.append(i * j)
-        print(row)
+            #print the product alligned nicely (< means left alligned)
+            print(f"{i * j:<{width}}", end="")
+        print()
 
 ### To run as a utility
 if __name__ == '__main__':
