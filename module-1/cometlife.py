@@ -22,7 +22,7 @@ dr0, orbits0 = comet(R=R_user) #user inputed radius is used
 print(f"For R = {R_km}: dr = {dr0:.2f}m, the comet lasts {orbits0:.0f} orbits")
 
 # albedo 0.5
-dr_A, orbits_A = comet(R = R_user, A = 0.5) #change A
+dr_A, orbits_A = comet(R = R_user, A = 0.3) #change A
 print(f"With albedo 0.5, dr = {dr_A:.2f}m, and the comet lasts {orbits_A:.0f} orbits,"
       f" {orbits_A/orbits0:.1f} times longer, because it absorbs only half the sunlight")
 

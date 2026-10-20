@@ -8,7 +8,7 @@ L_SUN = 3.8e26   # one solar luminosity, W
 AU = 1.496e11    # one astronomical unit, m
 
 
-def t_eq(L, d):
+def t_eq(L, d, A = 0.3):
     """Return the equilibrium temperature of a planet, in kelvin.
 
     L : luminosity of the star, in watts
@@ -17,7 +17,7 @@ def t_eq(L, d):
     Uses T_eq = (L / (16 pi sigma d^2))**(1/4).
     Check: the Sun (L = 3.8e26 W) at 1 AU (d = 1.496e11 m) gives about 278 K.
     """
-    T_eq = (L / (16*np.pi*SIGMA*d**2))**(1/4)
+    T_eq = ((L / (16*np.pi*SIGMA*d**2))**(1/4))*(1-A)
     return T_eq
 
 planets = [   # name, luminosity (solar units), distance (AU)
