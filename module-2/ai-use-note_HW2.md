@@ -36,6 +36,8 @@ for i in range(1,5):
         row.append(i * j)
     print(row)
 
+calc the width of the largest string (n*n)
+yes this was correct
 
 **What I asked the agent for** (one line per request):
 
@@ -43,6 +45,7 @@ look at my multitab.py doc and let me know if I should change anything to make i
 
 **What I changed by hand:** 
 I wrote the loop by myself and claude would not make it neat for me so I also added code to calculate length of longest string and then allign the numbers nicely
+
 **One "why" I asked, and the answer in my own words:** 
 what does print(..., end='') do?
 It adds a line after the ... (whatever you want to print)
@@ -53,3 +56,8 @@ The agent refused to write any actual code for me
 
 **What I still do not understand:**
 I hadn't seen this product table before so this is new for me
+
+
+
+***EXTRA CREDIT***
+Git is forked, here is the repo: https://github.com/rabbittibbar10/astr119-fall2026/tree/main/module-2
