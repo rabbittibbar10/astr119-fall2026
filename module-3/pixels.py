@@ -15,3 +15,6 @@ J = I.copy()
 J[20:40, 20:40, :] = 1 # add white dot
 J[356, :, :] = 0 # add black line
 imsave("module-3/pixels_out.png", J)
+neg = I.copy()
+neg = 1-neg
+imsave("module-3/pixels_neg.png", neg)
