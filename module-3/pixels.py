@@ -7,3 +7,11 @@ I = imread("module-3/clean_io_small.png")     # rows, columns, 3 colour channels
 
 if __name__ == "__main__":
     print("shape:", I.shape)
+print(I.size)
+print(I[0,0])
+print(I[356,349])
+
+J = I.copy()
+J[20:40, 20:40, :] = 1 # add white dot
+J[356, :, :] = 0 # add black line
+imsave("module-3/pixels_out.png", J)
