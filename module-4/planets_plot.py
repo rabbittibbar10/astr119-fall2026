@@ -19,8 +19,23 @@ def t_eq(L, d):
 
 
 if __name__ == "__main__":
+    #equilibrium temp of each planet
     T = t_eq(lum * L_SUN, dist * AU)
-    fig, ax = plt.subplots()
+    #create figure and set of axes
+    fig, ax = plt.subplots() 
+    #plot each planet as a point, distance in AU and temp in K
     ax.scatter(dist, T)
+    ax.set_xlabel("Distance (AU)")
+    ax.set_ylabel("Temperature (K)")
+    #build curve, 0.01 to 2 AU
+    d = np.linspace(0.01, 2.0, 200)
+    T_curve = t_eq(L_SUN, d * AU)
+    #change axis to log, curve will be a straight line
+    ax.set_xscale("log") 
+    ax.set_yscale("log")
+    ax.plot(d, T_curve)
+    #label each planet
+    for n, x, y in zip(name, dist, T):
+        ax.annotate(n, (x, y), fontsize=7)
     fig.savefig("module-4/planets.png", dpi=150)
     print("wrote module-4/planets.png")
