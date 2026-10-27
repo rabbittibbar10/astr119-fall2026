@@ -18,3 +18,10 @@ imsave("module-3/pixels_out.png", J)
 neg = I.copy()
 neg = 1-neg
 imsave("module-3/pixels_neg.png", neg)
+falsec = I.copy()
+falsec[:,:,2] = 1 - falsec[:,:,0]
+h, w = falsec.shape[:2]
+falsec[h//4 : h//4 + 20, w//2 - 60 : w//2 - 40, :] = 0   # left eye
+falsec[h//4 : h//4 + 20, w//2 + 40 : w//2 + 60, :] = 0   # right eye
+falsec[h//4 + 60 : h//4 + 75, w//2 - 60 : w//2 + 60, :] = [1, 0, 0]   # red mouth
+imsave("module-3/pixels_falsec.png", falsec)
