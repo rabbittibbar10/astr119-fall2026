@@ -22,9 +22,9 @@ if __name__ == "__main__":
     #equilibrium temp of each planet
     T = t_eq(lum * L_SUN, dist * AU)
     #create figure and set of axes
-    fig, ax = plt.subplots() 
+    fig, ax = plt.subplots(figsize = (8,6)) 
     #plot each planet as a point, distance in AU and temp in K
-    ax.scatter(dist, T)
+    ax.scatter(dist, T, label = "Planets")
     ax.set_xlabel("Distance (AU)")
     ax.set_ylabel("Temperature (K)")
     #build curve, 0.01 to 2 AU
@@ -33,9 +33,21 @@ if __name__ == "__main__":
     #change axis to log, curve will be a straight line
     ax.set_xscale("log") 
     ax.set_yscale("log")
-    ax.plot(d, T_curve)
+    ax.plot(d, T_curve, label = "Sun-like star (1L_sun)")
     #label each planet
+    # custom (x, y) offsets in points for planets in crowded spots
+    offsets = {
+        "HD 209458 b":  (6, 6),
+        "51 Peg b":     (6, -10),
+        "HD 189733 b":  (-60, -4),
+        "Kepler-22 b":  (-58, 4),
+        "Earth":        (-10, -14),
+        "Kepler-452 b": (6, 6),
+        "TRAPPIST-1 e": (-30, -14),
+    }
     for n, x, y in zip(name, dist, T):
-        ax.annotate(n, (x, y), fontsize=7)
+        dx, dy = offsets.get(n, (5, 5))   # everyone else: up and right
+        ax.annotate(n, (x, y), xytext=(dx, dy), textcoords="offset points", fontsize=8)
+    ax.legend()
     fig.savefig("module-4/planets.png", dpi=150)
     print("wrote module-4/planets.png")
