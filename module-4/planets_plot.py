@@ -44,7 +44,7 @@ if __name__ == "__main__":
     ax2.set_ylabel("Temperature (K)")
     ax2.plot(d, T_curve, label=r"Sun-like star (1L$_\odot$)")
     ax2.plot(d, T_half, linestyle="--", label=r"Half Sun-like star (0.5L$_\odot$)")
-    ax2.legend()
+
     #label each planet
     # custom (x, y) offsets in points for planets in crowded spots
     offsets = {
@@ -59,7 +59,11 @@ if __name__ == "__main__":
     for n, x, y in zip(name, dist, T):
         dx, dy = offsets.get(n, (5, 5))   # everyone else: up and right
         ax.annotate(n, (x, y), xytext=(dx, dy), textcoords="offset points", fontsize=8)
+    for n, x, y in zip(name, dist, T):
+        dx, dy = offsets.get(n, (5, 5))   # everyone else: up and right
+        ax2.annotate(n, (x, y), xytext=(dx, dy), textcoords="offset points", fontsize=8)
     ax.legend()
+    ax2.legend()
     fig.savefig("module-4/planets.png", dpi=130)
     print("wrote module-4/planets.png")
     loss_per_orbit = 5.586 #radius lost per orbit in m
