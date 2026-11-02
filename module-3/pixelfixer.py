@@ -39,12 +39,23 @@ def pixelfix(I):
     bad = (I[:,:,0] == 1) & (I[:,:,1] == 0) & (I[:,:,2] == 0)
     print(f"Number of bad pixels: {np.sum(bad)}")
 
-    # Paint the bad pixels white; :3 keeps any alpha channel untouched
-    Iq[bad, :3] = 1.0
+    rows, cols = np.nonzero(bad)                    #positions of bad pixels
+
+    up    = I[rows - 1, cols, :3]                   #neighbors' colors from I
+    down  = I[rows + 1, cols, :3]
+    left  = I[rows, cols - 1, :3]
+    right = I[rows, cols + 1, :3]
+
+    Iq[rows, cols, :3] = (up + down + left + right) / 4   #average, store in Iq
 
     # A pixel counts as changed if any of its channels differ
     changed = np.any(I != Iq, axis=2)
     print(f"Number of changed pixels: {np.sum(changed)}")
+
+    # Temporary check: how far are the fixed pixels from the clean image?
+    clean = imread('clean_io_small.png')
+    max_diff = np.max(np.abs(Iq[bad, :3] - clean[bad, :3]))
+    print(f"Largest difference from clean at bad pixels: {max_diff}")
 
     return Iq
 
