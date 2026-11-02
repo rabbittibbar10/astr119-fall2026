@@ -11,6 +11,21 @@ import numpy as np
 from matplotlib.pyplot import imread, imsave
 
 
+def compare_to_clean(Iq, bad, clean_file='clean_io_small.png'):
+    """Print the largest color difference from the clean image at the bad pixels.
+
+    Skips the comparison if the shapes differ or there are no bad pixels.
+    """
+    clean = imread(clean_file)
+    if Iq.shape != clean.shape:
+        print(f"Skipping clean check: {Iq.shape} vs {clean.shape}")
+    elif not np.any(bad):
+        print("Skipping clean check: no bad pixels")
+    else:
+        max_diff = np.max(np.abs(Iq[bad, :3] - clean[bad, :3]))
+        print(f"Largest difference from clean at bad pixels: {max_diff}")
+
+
 def pixelfix(I):
     """Replace bad pixels with the color averaged from their neighbors.
 
@@ -51,6 +66,8 @@ def pixelfix(I):
     # A pixel counts as changed if any of its channels differ
     changed = np.any(I != Iq, axis=2)
     print(f"Number of changed pixels: {np.sum(changed)}")
+
+    compare_to_clean(Iq, bad)
 
     return Iq
 
