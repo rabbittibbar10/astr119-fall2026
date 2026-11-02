@@ -1,5 +1,33 @@
+# AI-use note: HW3
+
+#step 3 answers
+
 #for a 100-200 image, I.shape is (100,200,3): 100 rows, 200 columns and 3 colour channels
 #I[:,:,0] gives the red chanel of each pixel, a 2D array of shap (100,200)
 #I[10,20] gives the [red, green, blue] values of the single pixel at row 10, column 20
 
 #before working with the agent, I predicted 20X23X4 = 1840 pixels
+
+
+
+
+#Step 6 answers:
+#In my final code, pixel (0, 0) has no up or left neighbor,
+#so it averages only (1, 0) and (0, 1) and divides by 2. Pixel (0, 5) has no
+#up neighbor, so it averages (1, 5), (0, 4) and (0, 6) and divides by 3.
+#Indices are clipped so nothing wraps or crashes, and masks zero out the
+#neighbors that don't exist. My first version used `rows - 1` directly, so at
+#(0, 5) it silently read (711, 5) from the bottom of the image (negative indices
+#wrap in Python), and bottom-row pixels crashed with `IndexError: index 712`.
+
+#How I used AI:
+#I worked in stages with Claude Code under the Protocol,
+#predicting each output before running it. The agent made one mistake I
+#caught: its clean-image check assumed the easy and clean images were the same
+#size, but they are (714, 700) and (712, 698), so it crashed.
+
+#extra credit
+#for the extra credit, I changed the masks to skip bad neighbors, which brought full's largest
+#error down from 0.38 to 0.18, and the agent wrote a test, to my spec, that
+#confirms no red pixels remain. Two damaged pixels at (382, 146) and (490, 215)
+#aren't pure red, so they are left unfixed on purpose.
