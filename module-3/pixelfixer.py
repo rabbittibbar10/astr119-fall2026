@@ -32,6 +32,12 @@ def pixelfix(I):
     ### 2. paint them white and look at the result;
     ### 3. replace the white with the average of the up/down/left/right
     ###    neighbors. Then try solo_corrupt_io_small.png.)
+    print(f"I.shape = {I.shape}")
+    print(f"I.dtype = {I.dtype}")
+
+    # True where a pixel is pure red, False everywhere else
+    bad = (I[:,:,0] == 1) & (I[:,:,1] == 0) & (I[:,:,2] == 0)
+    print(f"Number of bad pixels: {np.sum(bad)}")
 
     return Iq
 
