@@ -54,14 +54,32 @@ def pixelfix(I):
     bad = (I[:,:,0] == 1) & (I[:,:,1] == 0) & (I[:,:,2] == 0)
     print(f"Number of bad pixels: {np.sum(bad)}")
 
-    rows, cols = np.nonzero(bad)                    #positions of bad pixels
 
-    up    = I[rows - 1, cols, :3]                   #neighbors' colors from I
-    down  = I[rows + 1, cols, :3]
-    left  = I[rows, cols - 1, :3]
-    right = I[rows, cols + 1, :3]
 
-    Iq[rows, cols, :3] = (up + down + left + right) / 4   #average, store in Iq
+    M, N = I.shape[:2]
+    rows, cols = np.nonzero(bad)
+
+    # Which neighbors exist (are inside the image)?
+    up_ok    = rows > 0
+    down_ok  = rows < M - 1
+    left_ok  = cols > 0
+    right_ok = cols < N - 1
+
+        # Clip so no index wraps (-1) or runs off the end; the masks remove these values below
+    up    = I[np.clip(rows - 1, 0, M - 1), cols, :3]
+    down  = I[np.clip(rows + 1, 0, M - 1), cols, :3]
+    left  = I[rows, np.clip(cols - 1, 0, N - 1), :3]
+    right = I[rows, np.clip(cols + 1, 0, N - 1), :3]
+
+    # Zero out missing neighbors, then divide by how many are valid
+    total = (up * up_ok[:, None] + down * down_ok[:, None]
+             + left * left_ok[:, None] + right * right_ok[:, None])
+    count = up_ok.astype(int) + down_ok + left_ok + right_ok
+    print(np.unique(count, return_counts=True))   # temporary check
+
+    Iq[rows, cols, :3] = total / count[:, None]
+
+
 
     # A pixel counts as changed if any of its channels differ
     changed = np.any(I != Iq, axis=2)
