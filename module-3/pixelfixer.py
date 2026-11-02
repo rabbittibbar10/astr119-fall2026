@@ -52,11 +52,6 @@ def pixelfix(I):
     changed = np.any(I != Iq, axis=2)
     print(f"Number of changed pixels: {np.sum(changed)}")
 
-    # Temporary check: how far are the fixed pixels from the clean image?
-    clean = imread('clean_io_small.png')
-    max_diff = np.max(np.abs(Iq[bad, :3] - clean[bad, :3]))
-    print(f"Largest difference from clean at bad pixels: {max_diff}")
-
     return Iq
 
 
