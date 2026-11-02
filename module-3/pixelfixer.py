@@ -39,6 +39,13 @@ def pixelfix(I):
     bad = (I[:,:,0] == 1) & (I[:,:,1] == 0) & (I[:,:,2] == 0)
     print(f"Number of bad pixels: {np.sum(bad)}")
 
+    # Paint the bad pixels white; :3 keeps any alpha channel untouched
+    Iq[bad, :3] = 1.0
+
+    # A pixel counts as changed if any of its channels differ
+    changed = np.any(I != Iq, axis=2)
+    print(f"Number of changed pixels: {np.sum(changed)}")
+
     return Iq
 
 
