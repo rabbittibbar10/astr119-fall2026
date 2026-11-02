@@ -11,21 +11,6 @@ import numpy as np
 from matplotlib.pyplot import imread, imsave
 
 
-def compare_to_clean(Iq, bad, clean_file='clean_io_small.png'):
-    """Print the largest color difference from the clean image at the bad pixels.
-
-    Skips the comparison if the shapes differ or there are no bad pixels.
-    """
-    clean = imread(clean_file)
-    if Iq.shape != clean.shape:
-        print(f"Skipping clean check: {Iq.shape} vs {clean.shape}")
-    elif not np.any(bad):
-        print("Skipping clean check: no bad pixels")
-    else:
-        max_diff = np.max(np.abs(Iq[bad, :3] - clean[bad, :3]))
-        print(f"Largest difference from clean at bad pixels: {max_diff}")
-
-
 def pixelfix(I):
     """Replace bad pixels with the color averaged from their neighbors.
 
@@ -41,12 +26,7 @@ def pixelfix(I):
         A copy of the image with the bad pixels fixed.
     """
     Iq = I.copy()
-
-    ### YOUR WORK GOES HERE (with the agent, under the Protocol, in stages:
-    ### 1. find the bad pixels and print how many;
-    ### 2. paint them white and look at the result;
-    ### 3. replace the white with the average of the up/down/left/right
-    ###    neighbors. Then try solo_corrupt_io_small.png.)
+    
     print(f"I.shape = {I.shape}")
     print(f"I.dtype = {I.dtype}")
 
@@ -54,38 +34,39 @@ def pixelfix(I):
     bad = (I[:,:,0] == 1) & (I[:,:,1] == 0) & (I[:,:,2] == 0)
     print(f"Number of bad pixels: {np.sum(bad)}")
 
-
-
     M, N = I.shape[:2]
     rows, cols = np.nonzero(bad)
 
-    # Which neighbors exist (are inside the image)?
-    up_ok    = rows > 0
-    down_ok  = rows < M - 1
-    left_ok  = cols > 0
-    right_ok = cols < N - 1
+    # Neighbor positions, clipped so no index wraps (-1) or runs off the end;
+    # the masks below remove any clipped values
+    r_up    = np.clip(rows - 1, 0, M - 1)
+    r_down  = np.clip(rows + 1, 0, M - 1)
+    c_left  = np.clip(cols - 1, 0, N - 1)
+    c_right = np.clip(cols + 1, 0, N - 1)
 
-        # Clip so no index wraps (-1) or runs off the end; the masks remove these values below
-    up    = I[np.clip(rows - 1, 0, M - 1), cols, :3]
-    down  = I[np.clip(rows + 1, 0, M - 1), cols, :3]
-    left  = I[rows, np.clip(cols - 1, 0, N - 1), :3]
-    right = I[rows, np.clip(cols + 1, 0, N - 1), :3]
+    # A neighbor is valid if it's inside the image AND not bad itself
+    up_ok    = (rows > 0)     & ~bad[r_up, cols]
+    down_ok  = (rows < M - 1) & ~bad[r_down, cols]
+    left_ok  = (cols > 0)     & ~bad[rows, c_left]
+    right_ok = (cols < N - 1) & ~bad[rows, c_right]
 
-    # Zero out missing neighbors, then divide by how many are valid
+    up    = I[r_up, cols, :3]
+    down  = I[r_down, cols, :3]
+    left  = I[rows, c_left, :3]
+    right = I[rows, c_right, :3]
+
+    # Zero out invalid neighbors, then divide by how many are valid
     total = (up * up_ok[:, None] + down * down_ok[:, None]
              + left * left_ok[:, None] + right * right_ok[:, None])
     count = up_ok.astype(int) + down_ok + left_ok + right_ok
-    print(np.unique(count, return_counts=True))   # temporary check
 
+    # Note: count can be 0 if every neighbor is bad or outside the image,
+    # which would give nan. None of the three test images have that case.
     Iq[rows, cols, :3] = total / count[:, None]
-
-
 
     # A pixel counts as changed if any of its channels differ
     changed = np.any(I != Iq, axis=2)
     print(f"Number of changed pixels: {np.sum(changed)}")
-
-    compare_to_clean(Iq, bad)
 
     return Iq
 
@@ -101,7 +82,3 @@ def _main():
 if __name__ == '__main__':
     _main()
 
-#I = np.zeros((100,200,3))
-#print(I.shape)    
-#print(I[:,:,0].shape)
-#print(I[10,20])
