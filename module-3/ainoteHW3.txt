@@ -1,0 +1,5 @@
+#for a 100-200 image, I.shape is (100,200,3): 100 rows, 200 columns and 3 colour channels
+#I[:,:,0] gives the red chanel of each pixel, a 2D array of shap (100,200)
+#I[10,20] gives the [red, green, blue] values of the single pixel at row 10, column 20
+
+#before working with the agent, I predicted 20X23X4 = 1840 pixels

@@ -46,3 +46,8 @@ def _main():
 
 if __name__ == '__main__':
     _main()
+
+#I = np.zeros((100,200,3))
+#print(I.shape)    
+#print(I[:,:,0].shape)
+#print(I[10,20])
