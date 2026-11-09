@@ -57,18 +57,37 @@ def visualize_danger(n, R_new=3, saveas=''):
     plt.close('all') # this helps get rid of old figures you forgot to close
     fh = plt.figure(figsize=(8,6)) # my favorite figure size
 
-    ### YOUR CODE HERE ###
+    ax = fh.add_subplot(1, 1, 1)
+    ax.set_facecolor('white')
 
-    # Do the core plotting commands here
-    ## use the functions defined above to calculate the line segments to plot
+    # Core: grey disc of radius 1 with a black outline
+    ax.add_patch(plt.Circle((0, 0), 1, facecolor='0.8', edgecolor='black',
+                            linewidth=1.5))
 
-    # Set axes properties here for a better view
-    ## things like axis limits and tick marks
+    # Ring boundaries: each ring holds 1/n of the paper, not 1/n of the width
+    for k in range(1, n + 1):
+        r_k = product_visible(k / n, R_new)
+        ax.add_patch(plt.Circle((0, 0), r_k, fill=False, edgecolor='black',
+                                linewidth=1.5))
 
-    # Stylize and annotate
-    ## things like axes labels, font sizes, or any other finishing touches
+    # Axes: round circles, whole roll visible, frame but no ticks or grid
+    margin = 0.1 * R_new
+    ax.set_xlim(-R_new - margin, R_new + margin)
+    ax.set_ylim(-R_new - margin, R_new + margin)
+    ax.set_aspect('equal')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.grid(False)
 
-    ######################
+    # Title: n as a word, core fraction from R_new
+    words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
+             'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen',
+             'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen',
+             'nineteen', 'twenty']
+    n_word = words[n] if 0 <= n < len(words) else str(n)
+    core_frac = 'one third' if R_new == 3 else f'1/{R_new:g}'
+    ax.set_title(f'{n_word} equal amounts of paper '
+                 f'(core at {core_frac} of the radius)', fontsize=14)
 
     # Finally, show on screen and/or save to file
     if saveas:
